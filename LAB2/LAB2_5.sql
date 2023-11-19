@@ -1,0 +1,21 @@
+--ZAD 5
+
+CREATE OR REPLACE FUNCTION IleLat
+
+	(fData IN DATE)
+
+    RETURN NUMBER IS
+
+    vIleLat NUMBER;
+
+    vAktualnaData DATE;
+
+BEGIN
+
+    SELECT TO_DATE(TO_CHAR(SYSDATE,'MM/DD/YYYY'),'MM/DD/YYYY') INTO vAktualnaData FROM DUAL;
+
+    vIleLat := EXTRACT(YEAR FROM vAktualnaData) - EXTRACT(YEAR FROM fData);
+
+    RETURN vIleLat;
+
+END IleLat;

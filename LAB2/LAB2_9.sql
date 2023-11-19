@@ -1,0 +1,81 @@
+--ZAD 9
+
+DECLARE
+
+    vNazwa VARCHAR(50);
+
+    vStatus VARCHAR(50);
+
+    vKodZrodlowy CLOB;
+
+BEGIN
+
+    FOR x IN (SELECT OBJECT_NAME, STATUS FROM USER_OBJECTS
+
+              WHERE OBJECT_TYPE = 'PROCEDURE'
+
+              ORDER BY OBJECT_NAME)
+
+    LOOP
+
+        vNazwa := x.OBJECT_NAME;
+
+        vStatus := x.STATUS;
+
+        SELECT LISTAGG(TEXT, CHR(10)) WITHIN GROUP (ORDER BY LINE) INTO vKodZrodlowy FROM USER_SOURCE WHERE NAME = vNazwa AND TYPE = 'PROCEDURE';
+
+        DBMS_OUTPUT.PUT_LINE('NAZWA PROCEDURY: ' || vNazwa || chr(10) || 'STATUS PROCEDURY: ' || vStatus);
+
+        DBMS_OUTPUT.PUT_LINE('KOD ZRODLOWY PROCEDURY' || chr(10) || vKodZrodlowy);
+
+    END LOOP;
+
+    
+
+    FOR y IN (SELECT OBJECT_NAME, STATUS FROM USER_OBJECTS
+
+              WHERE OBJECT_TYPE = 'FUNCTION'
+
+              ORDER BY OBJECT_NAME)
+
+    LOOP
+
+        vNazwa := y.OBJECT_NAME;
+
+        vStatus := y.STATUS;
+
+        SELECT LISTAGG(TEXT, CHR(10)) WITHIN GROUP (ORDER BY LINE) INTO vKodZrodlowy FROM USER_SOURCE WHERE NAME = vNazwa AND TYPE = 'FUNCTION';
+
+        DBMS_OUTPUT.PUT_LINE('NAZWA FUNKCJI: ' || vNazwa || chr(10) || 'STATUS FUNKCJI: ' || vStatus);
+
+        DBMS_OUTPUT.PUT_LINE('KOD ZRODLOWY FUNKCJI' || chr(10) || vKodZrodlowy);
+
+    END LOOP;
+
+
+
+     FOR z IN (SELECT OBJECT_NAME, STATUS FROM USER_OBJECTS
+
+              WHERE OBJECT_TYPE IN ('PACKAGE', 'PACKAGE BODY')
+
+              ORDER BY OBJECT_NAME)
+
+    LOOP
+
+        vNazwa := z.OBJECT_NAME;
+
+        vStatus := z.STATUS;
+
+        SELECT LISTAGG(TEXT, CHR(10)) WITHIN GROUP (ORDER BY LINE) INTO vKodZrodlowy FROM USER_SOURCE WHERE NAME = vNazwa AND TYPE = 'PACKAGE';
+
+        DBMS_OUTPUT.PUT_LINE('NAZWA PAKIETU: ' || vNazwa || chr(10) || 'STATUS PAKIETU: ' || vStatus);
+
+        DBMS_OUTPUT.PUT_LINE('KOD ZRODLOWY PAKIETU' || chr(10) || vKodZrodlowy);
+
+    END LOOP;
+
+
+
+
+
+END;
